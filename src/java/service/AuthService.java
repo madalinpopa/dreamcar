@@ -6,15 +6,18 @@
 package service;
 
 import dao.UserDao;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import model.User;
 
 /**
@@ -34,20 +37,21 @@ public class AuthService implements Serializable {
 
     public String login() {
 
-        System.out.println(this.username);
-        System.out.println(this.password);
-
         // Get the user
         this.user = userDao.getUser(this.username, this.password);
 
         // Check if the result is null
         if (this.user != null) {
 
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+
             // If the user is not null, check the role
             if (this.user.getUser_role().equals("vendor")) {
-                return "/vendor/home?faces-redirect";
+                session.setAttribute("user", "vendor");
+                return "/vendor/home.xhtml?faces-redirect=true";
             } else if (this.user.getUser_role().equals("admin")) {
-                return "/admin/home?faces-redirect";
+                session.setAttribute("user", "admin");
+                return "/admin/home.xhtml?faces-redirect=true";
             }
         } else {
 
@@ -64,35 +68,48 @@ public class AuthService implements Serializable {
         }
 
         // Redirect again to login page.
-        return "/public/login?redirect=true";
+        return "/public/login.xhtml?redirect=true";
 
     }
-    
-    public String logout(){
-        
+
+    public String logout() {
+
         // Set the user to null
         this.user = null;
-        
-        return "/index?faces-redirect=true";
+
+        return "/index.xhtml?faces-redirect=true";
     }
 
     public void isAdmin(ComponentSystemEvent event) {
 
         FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+        Object isLogged = session.getAttribute("user");
 
-        if (!"admin".equals(user.getUser_role())) {
+        if (isLogged == null) {
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
-            nav.performNavigation("/public/login?faces-redirect=true");
+            nav.performNavigation("/public/login.xhtml?faces-redirect=true");
+
+        } else if ("vendor".equals(isLogged)) {
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+            nav.performNavigation("/public/login.xhtml?faces-redirect=true");
         }
 
     }
 
     public void isVendor(ComponentSystemEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
 
-        if (!"vendor".equals(user.getUser_role())) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+        Object isLogged = session.getAttribute("user");
+
+        if (isLogged == null) {
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
-            nav.performNavigation("/public/login?faces-redirect=true");
+            nav.performNavigation("/public/login.xhtml?faces-redirect=true");
+
+        } else if ("admin".equals(isLogged)) {
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+            nav.performNavigation("/public/login.xhtml?faces-redirect=true");
         }
     }
 
