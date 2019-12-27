@@ -1,0 +1,42 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <!-- TITLE -->
+    <ui:define name="title">Dream Car - About Page</ui:define>
+
+    <!-- CONTENT -->
+    <ui:define name="content">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <div class="card shadow my-5 text-center">
+                    <h3 class="mt-4">Register new user</h3>
+                    <h:messages class="alert alert-success" style="list-style: none" id="registerMessage"/>
+                    <div class="card-body text-left">
+                        <h:form>
+                            <div class="form-group">
+                                <h:inputText class="form-control" value="#{user.company}" a:placeholder="Company" id="company"/>
+                            </div>
+                            <div class="form-group">
+                                <h:inputText class="form-control" value="#{user.email}" a:placeholder="E-mail" id="email"/>
+                            </div>
+                            <div class="form-group">
+                                <h:inputText class="form-control" value="#{user.username}" a:placeholder="Username" id="username"/>
+                            </div>
+                            <div class="form-group">
+                                <h:inputSecret class="form-control" value="#{user.password}" a:placeholder="Password" id="password"/>
+                            </div>
+                            <div class="text-center">
+                                <h:commandButton class="btn btn-light mr-3" value="Register" action="#{user.register}"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+    
+</ui:composition>

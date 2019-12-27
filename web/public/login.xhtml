@@ -1,0 +1,36 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <!-- TITLE -->
+    <ui:define name="title">Dream Car - Login Page</ui:define>
+
+    <!-- CONTENT -->
+    <ui:define name="content">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <div class="card shadow my-5 text-center">
+                    <h3 class="mt-4">Welcome</h3>
+                    <h:outputText class="alert alert-danger" rendered="false" id="loginMessage"/>
+                    <div class="card-body text-left">
+                        <h:form>
+                            <div class="form-group">
+                                <h:inputText class="form-control" value="#{auth.username}" a:placeholder="Username" id="username"/>
+                            </div>
+                            <div class="form-group">
+                                <h:inputSecret class="form-control" value="#{auth.password}" a:placeholder="Password" id="password"/>
+                            </div>
+                            <div class="text-center">
+                                <h:commandButton class="btn btn-light mr-3" value="Login" action="#{auth.login}"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
