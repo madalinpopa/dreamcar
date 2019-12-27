@@ -67,6 +67,14 @@ public class AuthService implements Serializable {
         return "/public/login?redirect=true";
 
     }
+    
+    public String logout(){
+        
+        // Set the user to null
+        this.user = null;
+        
+        return "/index?faces-redirect=true";
+    }
 
     public void isAdmin(ComponentSystemEvent event) {
 

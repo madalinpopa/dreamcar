@@ -4,8 +4,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
-    
-    <f:event listener="#{auth.isVendor}" type="preRenderView" />
+
+    <f:metadata>
+        <f:event listener="#{auth.isVendor}" type="preRenderView" />
+    </f:metadata>
 
     <!-- TITLE -->
     <ui:define name="title">Dream Car - Vendor Home Page</ui:define>
@@ -20,7 +22,7 @@
                 <h:link class="nav-item nav-link" target="_self" value="Home" outcome="/vendor/home?faces-redirect=true"/>
                 <h:link class="nav-item nav-link" target="_self" value="Profile" outcome="/vendor/profile?faces-redirect=true"/>
                 <h:form>
-                    <h:commandLink class="nav-item nav-link" value="Logout"/>
+                    <h:commandLink class="nav-item nav-link" value="Logout" action="#{auth.logout}"/>
                 </h:form>
             </div>
         </nav>
