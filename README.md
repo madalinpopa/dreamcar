@@ -10,4 +10,4 @@ For this project have been used the following APIs:
 
 ### Screenshots
 
-[Imgur](https://i.imgur.com/LhS4nJt.png)
+![Welcom Page](https://i.imgur.com/LhS4nJt.png)
