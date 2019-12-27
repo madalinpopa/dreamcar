@@ -1,3 +1,5 @@
+![Welcom Page](https://i.imgur.com/LhS4nJt.png)
+
 ## Dreamcar
 
 This is a school project, a web application made with Java Enterprise tehnologies.
@@ -8,6 +10,9 @@ For this project have been used the following APIs:
 3. JPA - Java Persistence API
 4. MYSQL - Database
 
-### Screenshots
+## What application does?
 
-![Welcom Page](https://i.imgur.com/LhS4nJt.png)
+Dream Car is a company which produces auto components. This is an internal application which should be used by different vendors to bid for Dream Car placed orders. 
+
+Each vendor has an account and can see the orders placed by company. For one order, multiple vendors can bid. 
+
