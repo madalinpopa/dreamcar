@@ -9,6 +9,7 @@ For this project have been used the following APIs:
 2. CDI - Java Enterprise Contexts and Dependency Injection
 3. JPA - Java Persistence API
 4. MYSQL - Database
+5. Glasfish 4.1.2 - Application Server
 
 ## What application does?
 
