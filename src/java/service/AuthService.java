@@ -6,13 +6,11 @@
 package service;
 
 import dao.UserDao;
-import java.io.IOException;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
@@ -74,9 +72,9 @@ public class AuthService implements Serializable {
 
     public String logout() {
 
-        // Set the user to null
-        this.user = null;
-
+        FacesContext instance = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) instance.getExternalContext().getSession(false);
+        session.invalidate();
         return "/index.xhtml?faces-redirect=true";
     }
 
