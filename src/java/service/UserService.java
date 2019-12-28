@@ -5,7 +5,10 @@
  */
 package service;
 
+import dao.CompanyDao;
+import dao.ProfileDao;
 import dao.UserDao;
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -13,6 +16,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.UserTransaction;
+import model.Company;
+import model.Profile;
 import model.User;
 
 /**
@@ -24,36 +29,51 @@ import model.User;
 public class UserService {
 
     private User user;
-    private String username;
-    private String password;
-    private String company;
-    private String email;
+    private Profile profile;
+    private Company company;
 
     @Inject
     private UserDao userDao;
 
+    @Inject
+    private ProfileDao profileDao;
+
+    @Inject
+    private CompanyDao compdanyDao;
+
     @Resource
     UserTransaction utx;
 
-    public void register() {
-
-        // define the user
+    @PostConstruct
+    public void init() {
         this.user = new User();
-        this.user.setCompany(this.company);
-        this.user.setEmail(this.email);
-        this.user.setUsername(this.username);
-        this.user.setPassword(this.password);
-        this.user.setUser_role("vendor");
+        this.company = new Company();
+        this.profile = new Profile();
+    }
+
+    public void register() {
 
         // persist the user into database
         try {
             this.utx.begin();
-            this.userDao.addUser(this.user);
-            this.utx.commit();
+            // First, add the user
+            this.user.setRole("vendor");
+            User user = this.userDao.addUser(this.user);
             
+            
+            // Second, add the company
+            Company comp = this.compdanyDao.addCompany(this.company);
+            
+            // Third, add the user profile 
+            this.profile.setCompany(comp);
+            this.profile.setUserId(user);
+            this.profileDao.addProfile(this.profile);
+
+            this.utx.commit();
+
             // set the message for success
             String message = "The user has been registeres!";
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(message));
         } catch (Exception e) {
@@ -63,36 +83,28 @@ public class UserService {
 
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getPassword() {
-        return password;
+    public Profile getProfile() {
+        return profile;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
-    public String getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(String company) {
+    public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
 }

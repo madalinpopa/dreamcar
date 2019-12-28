@@ -44,10 +44,10 @@ public class AuthService implements Serializable {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
             // If the user is not null, check the role
-            if (this.user.getUser_role().equals("vendor")) {
+            if (this.user.getRole().equals("vendor")) {
                 session.setAttribute("user", "vendor");
                 return "/vendor/home.xhtml?faces-redirect=true";
-            } else if (this.user.getUser_role().equals("admin")) {
+            } else if (this.user.getRole().equals("admin")) {
                 session.setAttribute("user", "admin");
                 return "/admin/home.xhtml?faces-redirect=true";
             }

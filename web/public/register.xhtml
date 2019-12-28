@@ -18,16 +18,16 @@
                     <div class="card-body text-left">
                         <h:form>
                             <div class="form-group">
-                                <h:inputText class="form-control" value="#{user.company}" a:placeholder="Company" id="company"/>
+                                <h:inputText class="form-control" value="#{user.company.compName}" a:placeholder="Company" id="company"/>
                             </div>
                             <div class="form-group">
-                                <h:inputText class="form-control" value="#{user.email}" a:placeholder="E-mail" id="email"/>
+                                <h:inputText class="form-control" value="#{user.profile.email}" a:placeholder="E-mail" id="email"/>
                             </div>
                             <div class="form-group">
-                                <h:inputText class="form-control" value="#{user.username}" a:placeholder="Username" id="username"/>
+                                <h:inputText class="form-control" value="#{user.user.username}" a:placeholder="Username" id="username"/>
                             </div>
                             <div class="form-group">
-                                <h:inputSecret class="form-control" value="#{user.password}" a:placeholder="Password" id="password"/>
+                                <h:inputSecret class="form-control" value="#{user.user.password}" a:placeholder="Password" id="password"/>
                             </div>
                             <div class="text-center">
                                 <h:commandButton class="btn btn-light mr-3" value="Register" action="#{user.register}"/>
@@ -38,5 +38,5 @@
             </div>
         </div>
     </ui:define>
-    
+
 </ui:composition>

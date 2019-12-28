@@ -26,6 +26,7 @@ public class UserDao {
 
     public User addUser(User u) {
         this.em.persist(u);
+        this.em.flush();
         return u;
     }
 
@@ -36,11 +37,11 @@ public class UserDao {
 
         // Interogate the database
         try {
-            Query q =  this.em.createQuery(query);
-            
+            Query q = this.em.createQuery(query);
+
             q.setParameter("user", username);
             q.setParameter("pass", password);
-            
+
             User user = (User) q.getSingleResult();
 
             // Return the user

@@ -6,36 +6,77 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author pmadalin
  */
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
+    , @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId")
+    , @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+    , @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")
+    , @NamedQuery(name = "User.findByRole", query = "SELECT u FROM User u WHERE u.role = :role")})
 public class User implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    @Column(name = "USER_ID")
+    private Integer userId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "USERNAME")
     private String username;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "PASSWORD")
     private String password;
-    private String user_role;
-    private String company;
-    private String email;
+    @Size(max = 10)
+    @Column(name = "ROLE")
+    private String role;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.EAGER)
+    private Profile profile;
 
-    public int getId() {
-        return id;
+    public User() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public User(Integer userId) {
+        this.userId = userId;
+    }
+
+    public User(Integer userId, String username, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -54,28 +95,45 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getUser_role() {
-        return user_role;
+    public String getRole() {
+        return role;
     }
 
-    public void setUser_role(String user_role) {
-        this.user_role = user_role;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getCompany() {
-        return company;
+    public Profile getProfile() {
+        return profile;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (userId != null ? userId.hashCode() : 0);
+        return hash;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof User)) {
+            return false;
+        }
+        User other = (User) object;
+        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+            return false;
+        }
+        return true;
     }
 
+    @Override
+    public String toString() {
+        return "model.User[ userId=" + userId + " ]";
+    }
+    
 }
