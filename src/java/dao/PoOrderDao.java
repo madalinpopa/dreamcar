@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -26,6 +27,16 @@ public class PoOrderDao {
         this.em.persist(po);
         this.em.flush();
         return po;
+    }
+    
+    public List<PoOrder> getAllOrders(){
+        List<PoOrder> orders = this.em.createNamedQuery("PoOrder.findAll").getResultList();
+        return orders;
+    }
+    
+    public PoOrder findOrderById(int id){
+        PoOrder order = this.em.find(PoOrder.class, id);
+        return order;
     }
 
     public EntityManager getEm() {

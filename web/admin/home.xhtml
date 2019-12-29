@@ -32,9 +32,50 @@
     <!-- CONTENT -->
     <ui:define name="content">
         <div class="row mt-3 mx-0">
-            <div class="col-md-12 m-0 p-0">
-                Admin Home Page
+            <div class="col-md-12 mt-4 mx-0 p-0">
+                <h3>All orders</h3>
+                <h:dataTable value="#{order.orders}" var="orderv" class="table mt-3">
+                    <h:column>
+                        <f:facet name="header">PO Number</f:facet>
+                            #{orderv.poNumber}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Open</f:facet>
+                            #{orderv.status}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Date</f:facet>
+                            #{orderv.orderDate}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Needed by</f:facet>
+                            #{orderv.dueDate}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Component</f:facet>
+                            #{orderv.component}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Quantity</f:facet>
+                            #{orderv.qt}
+                    </h:column>
+                    <h:column>
+                        <h:form>
+                            <h:commandLink value="Bids" />
+                        </h:form>
+                    </h:column>
+                    <h:column>
+                        <h:form>
+                            <h:commandLink value="Close" action="#{order.closeOrder(orderv.orderId)}" />
+                        </h:form>
+                    </h:column>
+                    <h:column>
+                        <h:form>
+                            <h:commandLink value="Open" action="#{order.openOrder(orderv.orderId)}" />
+                        </h:form>
+                    </h:column>
+                </h:dataTable>
             </div> 
         </div>
     </ui:define>
-</ui:composition>
+</ui:composition> 
