@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -52,6 +53,14 @@ public class UserDao {
             // If no result, then return null
             return null;
         }
+    }
+    
+    public List<User> getAllVendors(String role){
+        
+        Query query = this.em.createNamedQuery("User.findByRole");
+        query.setParameter("role", role);
+        List<User> vendors = query.getResultList();
+        return vendors;
     }
 
     public EntityManager getEm() {

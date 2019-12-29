@@ -6,7 +6,6 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -50,6 +48,15 @@ public class Profile implements Serializable {
     @Size(max = 30)
     @Column(name = "PHONE")
     private String phone;
+    
+    @Size(max = 30)
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+    
+     @Size(max = 30)
+    @Column(name = "LAST_NAME")
+    private String lastName;
+    
     @JoinColumn(name = "COMPANY", referencedColumnName = "COMP_ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Company company;
@@ -103,6 +110,8 @@ public class Profile implements Serializable {
     public void setUserId(User userId) {
         this.userId = userId;
     }
+    
+    
 
     @Override
     public int hashCode() {
@@ -127,6 +136,22 @@ public class Profile implements Serializable {
     @Override
     public String toString() {
         return "model.Profile[ profileId=" + profileId + " ]";
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }

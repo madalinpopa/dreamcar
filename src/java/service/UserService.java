@@ -8,6 +8,7 @@ package service;
 import dao.CompanyDao;
 import dao.ProfileDao;
 import dao.UserDao;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
@@ -31,6 +32,7 @@ public class UserService {
     private User user;
     private Profile profile;
     private Company company;
+    private List<User> vendors;
 
     @Inject
     private UserDao userDao;
@@ -49,6 +51,7 @@ public class UserService {
         this.user = new User();
         this.company = new Company();
         this.profile = new Profile();
+        this.vendors = this.userDao.getAllVendors("vendor");
     }
 
     public void register() {
@@ -82,7 +85,7 @@ public class UserService {
         }
 
     }
-
+    
     public User getUser() {
         return user;
     }
@@ -107,4 +110,13 @@ public class UserService {
         this.company = company;
     }
 
+    public List<User> getVendors() {
+        return vendors;
+    }
+
+    public void setVendors(List<User> vendors) {
+        this.vendors = vendors;
+    }
+
+    
 }
