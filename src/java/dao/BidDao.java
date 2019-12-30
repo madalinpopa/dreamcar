@@ -24,6 +24,7 @@ public class BidDao {
 
     public Bid addBid(Bid b) {
         this.em.persist(b);
+        this.em.flush();
         return b;
     }
 

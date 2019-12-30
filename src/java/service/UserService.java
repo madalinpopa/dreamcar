@@ -73,7 +73,8 @@ public class UserService {
             this.profileDao.addProfile(this.profile);
 
             this.utx.commit();
-
+            this.profileDao.getEm().getEntityManagerFactory().getCache().evictAll();
+            
             // set the message for success
             String message = "The user has been registeres!";
 
