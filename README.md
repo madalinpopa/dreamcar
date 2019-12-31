@@ -17,3 +17,10 @@ Dream Car is a company which produces auto components. This is an internal appli
 
 Each vendor has an account and can see the orders placed by company. For one order, multiple vendors can bid. 
 
+## Screenshots
+
+![Orders](https://i.imgur.com/HcFhGdc.png)
+
+![Vendors](https://i.imgur.com/qqjzLwA.png)
+
+![New Order](https://i.imgur.com/vEq00V6.png)
