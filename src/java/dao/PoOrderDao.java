@@ -10,6 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import model.PoOrder;
 
 /**
@@ -27,6 +28,15 @@ public class PoOrderDao {
         this.em.persist(po);
         this.em.flush();
         return po;
+    }
+    
+    public boolean deleteOrder(int id){
+        
+        Query query = this.em.createQuery("DELETE FROM PoOrder p WHERE p.orderId = :id");
+        query.setParameter("id", id);
+        int order = query.executeUpdate();
+        System.out.println(order);
+        return order > 0;
     }
     
     public List<PoOrder> getAllOrders(){

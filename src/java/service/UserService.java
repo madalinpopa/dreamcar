@@ -16,6 +16,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import model.Company;
 import model.Profile;
@@ -80,7 +85,7 @@ public class UserService {
 
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(message));
-        } catch (Exception e) {
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
             System.out.println("Register user failed to persist");
             throw new RuntimeException();
         }

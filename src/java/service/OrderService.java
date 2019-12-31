@@ -14,8 +14,8 @@ import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.PersistenceException;
 import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
@@ -80,7 +80,7 @@ public class OrderService {
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
             nav.performNavigation("/admin/home.xhtml?faces-redirect=true");
 
-        } catch (Exception e) {
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
             e.printStackTrace();
         }
     }
@@ -103,9 +103,26 @@ public class OrderService {
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
             nav.performNavigation("/admin/home.xhtml?faces-redirect=true");
 
-        } catch (Exception e) {
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteOrder(int id) {
+
+        try {
+         
+            utx.begin();
+            this.poOrderDao.deleteOrder(id);
+            utx.commit();
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
+            e.printStackTrace();
+        }
+        
+        // Reload the home page
+        FacesContext context = FacesContext.getCurrentInstance();
+        ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+        nav.performNavigation("/admin/home.xhtml?faces-redirect=true");
     }
 
     public PoOrder getOrder() {

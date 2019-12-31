@@ -74,6 +74,11 @@
                             <h:commandLink value="Open" action="#{order.openOrder(orderv.orderId)}" />
                         </h:form>
                     </h:column>
+                    <h:column>
+                        <h:form>
+                            <h:commandLink value="Delete" action="#{order.deleteOrder(orderv.orderId)}" />
+                        </h:form>
+                    </h:column>
                 </h:dataTable>
             </div> 
         </div>
