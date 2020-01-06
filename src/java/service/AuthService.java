@@ -53,18 +53,6 @@ public class AuthService implements Serializable {
                 session.setAttribute("user", "admin");
                 return "/admin/home.xhtml?faces-redirect=true";
             }
-        } else {
-
-            // set the message
-            String message = "The user doesn't exist!";
-
-            FacesContext context = FacesContext.getCurrentInstance();
-            UIViewRoot view = context.getViewRoot();
-            UIComponent component = view.findComponent("loginMessage");
-            component.getAttributes().put("rendered", true);
-            component.getAttributes().put("value", message);
-
-            System.out.println("Utilizatorul nu exista");
         }
 
         // Redirect again to login page.

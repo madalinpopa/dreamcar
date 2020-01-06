@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -48,6 +49,9 @@ public class UserService {
     @Inject
     private CompanyDao compdanyDao;
 
+    @Inject
+    private AuthService authServ;
+
     @Resource
     UserTransaction utx;
 
@@ -67,11 +71,10 @@ public class UserService {
             // First, add the user
             this.user.setRole("vendor");
             User user = this.userDao.addUser(this.user);
-            
-            
+
             // Second, add the company
             Company comp = this.compdanyDao.addCompany(this.company);
-            
+
             // Third, add the user profile 
             this.profile.setCompany(comp);
             this.profile.setUserId(user);
@@ -79,7 +82,7 @@ public class UserService {
 
             this.utx.commit();
             this.profileDao.getEm().getEntityManagerFactory().getCache().evictAll();
-            
+
             // set the message for success
             String message = "The user has been registeres!";
 
@@ -91,7 +94,33 @@ public class UserService {
         }
 
     }
-    
+
+    public void updateUserProfile() {
+
+        User updated_user = this.authServ.getUser();
+        Profile updated_user_profile = updated_user.getProfile();
+        Company updated_user_company = updated_user_profile.getCompany();
+
+        try {
+            this.utx.begin();
+            this.userDao.getEm().merge(updated_user);
+            this.userDao.getEm().flush();
+            this.profileDao.getEm().merge(updated_user_profile);
+            this.profileDao.getEm().flush();
+            this.compdanyDao.getEm().merge(updated_user_company);
+            this.compdanyDao.getEm().flush();
+            this.utx.commit();
+
+            // Reload the profile page
+            FacesContext context = FacesContext.getCurrentInstance();
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+            nav.performNavigation("/vendor/profile.xhtml?faces-redirect=true");
+
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
+            e.printStackTrace();
+        }
+    }
+
     public User getUser() {
         return user;
     }
@@ -124,5 +153,4 @@ public class UserService {
         this.vendors = vendors;
     }
 
-    
 }

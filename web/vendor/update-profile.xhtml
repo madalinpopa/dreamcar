@@ -40,22 +40,34 @@
                         <div class="media">
                             <h:graphicImage class="img-fluid mr-3" width="100" height="100" value="/resource/img/vendor.png" />
                             <div class="media-body">
-                                <strong>First Name: </strong><span> <h:outputText value="#{auth.user.profile.firstName}" /> </span>
-                                <br/>
-                                <strong>Last Name: </strong><span> <h:outputText value="#{auth.user.profile.lastName}" /> </span>
-                                <br/>
-                                <br />
-                                <strong>Phone: </strong><span> <h:outputText value="#{auth.user.profile.phone}" /> </span>
-                                <br />
-                                <strong>E-mail: </strong><span> <h:outputText value="#{auth.user.profile.email}" /> </span>
-                                <br />
-                                <br />
-                                <strong>Company: </strong><span> <h:outputText value="#{auth.user.profile.company.compName}" /> </span>
-                                <br />
                                 <strong>Country: </strong><span> <h:outputText value="#{auth.user.profile.company.country}" /> </span>
                                 <br />
                                 <h:form>
-                                    <h:commandButton class="btn btn-block btn-light mt-3" value="Update" action="/vendor/update-profile.xhtml?faces-redirect=true" />
+                                    <div class="form-group">
+                                        <h:outputLabel for="firstname" value="First Name"/>
+                                        <h:inputText id="firstname" class="form-control" value="#{auth.user.profile.firstName}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <h:outputLabel for="lastname" value="Last Name"/>
+                                        <h:inputText id="lastname" class="form-control" value="#{auth.user.profile.lastName}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <h:outputLabel for="phone" value="Phone"/>
+                                        <h:inputText id="phone" class="form-control" value="#{auth.user.profile.phone}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <h:outputLabel for="email" value="E-mail"/>
+                                        <h:inputText id="email" class="form-control" value="#{auth.user.profile.email}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <h:outputLabel for="comp" value="Company"/>
+                                        <h:inputText id="comp" class="form-control" value="#{auth.user.profile.company.compName}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <h:outputLabel for="country" value="Country"/>
+                                        <h:inputText id="country" class="form-control" value="#{auth.user.profile.company.country}"/>
+                                    </div>
+                                    <h:commandButton class="btn btn-block btn-light mt-3" value="Submit" action="#{user.updateUserProfile}" />
                                 </h:form>
                             </div>
                         </div>
