@@ -9,6 +9,7 @@ import dao.BidDao;
 import dao.PoOrderDao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -39,6 +40,7 @@ public class BidService {
     private UIComponent component;
     private Bid bid;
     private PoOrder order;
+    private List<Bid> bids;
 
     @Inject
     private BidDao bidDao;
@@ -94,7 +96,17 @@ public class BidService {
             nav.performNavigation("/vendor/home.xhtml?faces-redirect=true");
         }
     }
-
+    
+    public void getAllBidsForAnOrder(int orderId){
+    
+        // get the order
+        PoOrder selected_order = this.orderDao.findOrderById(orderId);
+        
+        if(selected_order != null){
+            this.bids = selected_order.getBidList();
+        }
+    }
+    
     public Bid getBid() {
         return bid;
     }
@@ -117,6 +129,14 @@ public class BidService {
 
     public void setComponent(UIComponent component) {
         this.component = component;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
 }

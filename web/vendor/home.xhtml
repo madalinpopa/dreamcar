@@ -82,7 +82,9 @@
                     </h:column>
                     <h:column>
                         <h:form>
-                            <h:commandLink value="View offers"/>
+                            <h:link value="View offers" outcome="/vendor/offers.xhtml?faces-redirect=true">
+                                <f:param name="orderId" value="#{orderv.orderId}" />
+                            </h:link>
                         </h:form>
                     </h:column>
                 </h:dataTable>
