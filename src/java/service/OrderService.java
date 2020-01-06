@@ -11,9 +11,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -30,6 +32,7 @@ import model.PoOrder;
 @RequestScoped
 public class OrderService {
 
+    private UIComponent component;
     private PoOrder order;
     private List<PoOrder> orders;
 
@@ -51,6 +54,10 @@ public class OrderService {
             utx.begin();
             this.poOrderDao.addOrder(this.order);
             utx.commit();
+
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("renderMessage", true);
+            session.setAttribute("message", " The order has been added!");
 
             FacesContext context = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
@@ -75,6 +82,10 @@ public class OrderService {
             this.poOrderDao.getEm().flush();
             utx.commit();
 
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("renderMessage", true);
+            session.setAttribute("message", " The order has been closed!");
+
             // Reload the home page
             FacesContext context = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
@@ -98,6 +109,10 @@ public class OrderService {
             this.poOrderDao.getEm().flush();
             utx.commit();
 
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("renderMessage", true);
+            session.setAttribute("message", " The order has been opened!");
+
             // Reload the home page
             FacesContext context = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
@@ -111,14 +126,18 @@ public class OrderService {
     public void deleteOrder(int id) {
 
         try {
-         
+
             utx.begin();
             this.poOrderDao.deleteOrder(id);
             utx.commit();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
             e.printStackTrace();
         }
-        
+
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        session.setAttribute("renderMessage", true);
+        session.setAttribute("message", " The order has been deleted!");
+
         // Reload the home page
         FacesContext context = FacesContext.getCurrentInstance();
         ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
@@ -139,6 +158,14 @@ public class OrderService {
 
     public void setOrders(List<PoOrder> orders) {
         this.orders = orders;
+    }
+
+    public UIComponent getComponent() {
+        return component;
+    }
+
+    public void setComponent(UIComponent component) {
+        this.component = component;
     }
 
 }

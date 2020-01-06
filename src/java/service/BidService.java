@@ -14,9 +14,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -34,6 +36,7 @@ import model.PoOrder;
 @RequestScoped
 public class BidService {
 
+    private UIComponent component;
     private Bid bid;
     private PoOrder order;
 
@@ -75,8 +78,13 @@ public class BidService {
                 this.bidDao.addBid(this.bid);
                 this.utx.commit();
 
+                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+                session.setAttribute("renderMessage", true);
+                session.setAttribute("message", " Your offer has been added to the order!");
+
                 ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
                 nav.performNavigation("/vendor/home.xhtml?faces-redirect=true");
+
             }
 
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
@@ -101,6 +109,14 @@ public class BidService {
 
     public void setOrder(PoOrder order) {
         this.order = order;
+    }
+
+    public UIComponent getComponent() {
+        return component;
+    }
+
+    public void setComponent(UIComponent component) {
+        this.component = component;
     }
 
 }

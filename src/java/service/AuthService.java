@@ -13,6 +13,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
@@ -109,6 +111,16 @@ public class AuthService implements Serializable {
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
             nav.performNavigation("/public/login.xhtml?faces-redirect=true");
         }
+    }
+
+    public void removeSessionAttributeAfterRender(PhaseEvent event) {
+        if (event.getPhaseId() == PhaseId.RENDER_RESPONSE) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+            session.removeAttribute("renderMessage");
+            session.removeAttribute("message");
+        }
+
     }
 
     public String getUsername() {
