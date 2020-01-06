@@ -9,6 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import model.Bid;
 
 /**
@@ -27,6 +28,13 @@ public class BidDao {
         this.em.flush();
         return b;
     }
+    
+    public boolean deleteBid(int id){
+        Query query = this.em.createQuery("DELETE FROM Bid b WHERE b.bidId = :id");
+        query.setParameter("id", id);
+        int result = query.executeUpdate();
+        return result > 0;
+    }
 
     public EntityManager getEm() {
         return em;
@@ -35,5 +43,7 @@ public class BidDao {
     public void setEm(EntityManager em) {
         this.em = em;
     }
+    
+    
 
 }

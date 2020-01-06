@@ -37,6 +37,7 @@ import model.PoOrder;
 @RequestScoped
 public class BidService {
 
+    private int orderId;
     private UIComponent component;
     private Bid bid;
     private PoOrder order;
@@ -80,6 +81,8 @@ public class BidService {
                 this.bidDao.addBid(this.bid);
                 this.utx.commit();
 
+                this.bidDao.getEm().getEntityManagerFactory().getCache().evictAll();
+
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                 session.setAttribute("renderMessage", true);
                 session.setAttribute("message", " Your offer has been added to the order!");
@@ -96,17 +99,42 @@ public class BidService {
             nav.performNavigation("/vendor/home.xhtml?faces-redirect=true");
         }
     }
-    
-    public void getAllBidsForAnOrder(int orderId){
-    
+
+    public void getAllBidsForAnOrder() {
+
         // get the order
-        PoOrder selected_order = this.orderDao.findOrderById(orderId);
-        
-        if(selected_order != null){
+        PoOrder selected_order = this.orderDao.findOrderById(this.orderId);
+
+        if (selected_order != null) {
+
             this.bids = selected_order.getBidList();
+            this.order = selected_order;
         }
     }
-    
+
+    public String deleteBid(int id) {
+        try {
+            this.utx.begin();
+            boolean result = this.bidDao.deleteBid(id);
+            this.utx.commit();
+            
+            this.bidDao.getEm().getEntityManagerFactory().getCache().evictAll();
+
+            if (result == true) {
+                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+                session.setAttribute("renderMessage", true);
+                session.setAttribute("message", " The offer has been deleted!");
+
+                return "/vendor/home.xhtml?faces-redirect=true";
+            }
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
+            e.printStackTrace();
+        }
+
+        return "/vendor/offers.xhtml?faces-redirect=true";
+
+    }
+
     public Bid getBid() {
         return bid;
     }
@@ -137,6 +165,14 @@ public class BidService {
 
     public void setBids(List<Bid> bids) {
         this.bids = bids;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
 }

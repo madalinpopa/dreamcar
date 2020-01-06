@@ -35,7 +35,6 @@ public class PoOrderDao {
         Query query = this.em.createQuery("DELETE FROM PoOrder p WHERE p.orderId = :id");
         query.setParameter("id", id);
         int order = query.executeUpdate();
-        System.out.println(order);
         return order > 0;
     }
     

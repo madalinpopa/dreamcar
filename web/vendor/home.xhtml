@@ -36,7 +36,7 @@
                     <h:panelGroup id="successMessage" rendered="#{not empty renderMessage}" >
 
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Holy guacamole!</strong><h:outputText value="#{message}" />
+                            <strong>Congratulations!</strong><h:outputText value="#{message}" />
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&#xd7;</span>
                             </button>
@@ -74,18 +74,14 @@
                             #{orderv.qt}
                     </h:column>
                     <h:column>
-                        <h:form>
-                            <h:link value="New offer" outcome="/vendor/new-offer.xhtml?faces-redirect=true" >
-                                <f:param name="orderId" value="#{orderv.orderId}"/>
-                            </h:link>
-                        </h:form>
+                        <h:link value="New offer" outcome="/vendor/new-offer.xhtml?faces-redirect=true" >
+                            <f:param name="orderId" value="#{orderv.orderId}"/>
+                        </h:link>
                     </h:column>
                     <h:column>
-                        <h:form>
-                            <h:link value="View offers" outcome="/vendor/offers.xhtml?faces-redirect=true">
-                                <f:param name="orderId" value="#{orderv.orderId}" />
-                            </h:link>
-                        </h:form>
+                        <h:link value="View offers" outcome="/vendor/offers.xhtml?faces-redirect=true">
+                            <f:param name="orderId" value="#{orderv.orderId}" />
+                        </h:link>
                     </h:column>
                 </h:dataTable>
             </div> 
