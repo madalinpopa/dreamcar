@@ -57,6 +57,29 @@
                                 <h:form>
                                     <h:commandButton class="btn btn-block btn-light mt-3" value="Update" action="/vendor/update-profile.xhtml?faces-redirect=true" />
                                 </h:form>
+                                <h5 class="mt-2">My Offers</h5>
+                                <h:dataTable class="table mt-3" value="#{bidService.userBids}" var="bidv">
+                                    <h:column>
+                                        <f:facet name="header">Offer ID</f:facet>
+                                            #{bidv.bidId}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Creation Date</f:facet>
+                                            #{bidv.bidDate}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Price</f:facet>
+                                            #{bidv.price}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Order Number</f:facet>
+                                            #{bidv.poNumber.poNumber}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Accepted</f:facet>
+                                            #{bidv.status}
+                                    </h:column>
+                                </h:dataTable>
                             </div>
                         </div>
                     </div>

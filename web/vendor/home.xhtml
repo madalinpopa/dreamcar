@@ -79,9 +79,7 @@
                         </h:link>
                     </h:column>
                     <h:column>
-                        <h:link value="View offers" outcome="/vendor/offers.xhtml?faces-redirect=true">
-                            <f:param name="orderId" value="#{orderv.orderId}" />
-                        </h:link>
+                        <h:link value="#{'Offers: '.concat(orderv.bidList.size())}" />
                     </h:column>
                 </h:dataTable>
             </div> 

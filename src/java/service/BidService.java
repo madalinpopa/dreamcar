@@ -42,6 +42,7 @@ public class BidService {
     private Bid bid;
     private PoOrder order;
     private List<Bid> bids;
+    private List<Bid> userBids;
 
     @Inject
     private BidDao bidDao;
@@ -49,12 +50,16 @@ public class BidService {
     @Inject
     private PoOrderDao orderDao;
 
+    @Inject
+    private AuthService auth;
+
     @Resource
     private UserTransaction utx;
 
     @PostConstruct
     public void init() {
         this.bid = new Bid();
+        this.userBids = auth.getUser().getBidList();
     }
 
     public void addBid() {
@@ -76,8 +81,10 @@ public class BidService {
             if (this.order != null) {
                 // Create the offer
                 this.utx.begin();
+                this.bid.setUserId(auth.getUser());
                 this.bid.setPoNumber(order);
                 this.bid.setBidDate(offerDate);
+                this.bid.setStatus(Boolean.FALSE);
                 this.bidDao.addBid(this.bid);
                 this.utx.commit();
 
@@ -112,26 +119,59 @@ public class BidService {
         }
     }
 
-    public String deleteBid(int id) {
-        try {
-            this.utx.begin();
-            boolean result = this.bidDao.deleteBid(id);
-            this.utx.commit();
-            
-            this.bidDao.getEm().getEntityManagerFactory().getCache().evictAll();
+    public String acceptBid() {
 
-            if (result == true) {
-                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-                session.setAttribute("renderMessage", true);
-                session.setAttribute("message", " The offer has been deleted!");
+        // Get the param send from new-offer.xhtml page
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
 
-                return "/vendor/home.xhtml?faces-redirect=true";
+        this.orderId = Integer.parseInt(params.get("orderId"));
+        this.order = this.orderDao.findOrderById(this.orderId);
+        String bidId = params.get("bidId");
+
+        if (bidId != null) {
+            this.bid = this.bidDao.findBidById(Integer.parseInt(bidId));
+            try {
+                this.utx.begin();
+                this.bid.setStatus(Boolean.TRUE);
+                this.bidDao.getEm().merge(this.bid);
+                this.bidDao.getEm().flush();
+                this.utx.commit();
+
+            } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
+                e.printStackTrace();
             }
-        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            e.printStackTrace();
         }
 
-        return "/vendor/offers.xhtml?faces-redirect=true";
+        return "/admin/offers.xhtml?faces-redirect=true&orderId=" + this.orderId;
+
+    }
+
+    public String declineBid() {
+
+        // Get the param send from new-offer.xhtml page
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+
+        this.orderId = Integer.parseInt(params.get("orderId"));
+        this.order = this.orderDao.findOrderById(this.orderId);
+        String bidId = params.get("bidId");
+
+        if (bidId != null) {
+            this.bid = this.bidDao.findBidById(Integer.parseInt(bidId));
+            try {
+                this.utx.begin();
+                this.bid.setStatus(Boolean.FALSE);
+                this.bidDao.getEm().merge(this.bid);
+                this.bidDao.getEm().flush();
+                this.utx.commit();
+
+            } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "/admin/offers.xhtml?faces-redirect=true&orderId=" + this.orderId;
 
     }
 
@@ -173,6 +213,14 @@ public class BidService {
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
+    }
+
+    public List<Bid> getUserBids() {
+        return userBids;
+    }
+
+    public void setUserBids(List<Bid> userBids) {
+        this.userBids = userBids;
     }
 
 }

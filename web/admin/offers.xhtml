@@ -6,7 +6,7 @@
                 xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
     <f:metadata>
-        <f:event listener="#{auth.isVendor}" type="preRenderView" />
+        <f:event listener="#{auth.isAdmin}" type="preRenderView" />
 
         <f:viewParam name="orderId" value="#{bidService.orderId}" />
         <f:viewAction action="#{bidService.getAllBidsForAnOrder}"/>
@@ -18,12 +18,13 @@
     <!-- NAV BAR -->
     <ui:define name="navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light mt-4">
-            <h:link class="navbar-brand" outcome="/vendor/home?faces-redirect=true">
+            <h:link class="navbar-brand" outcome="/admin/home?faces-redirect=true">
                 <h:graphicImage class="img-fluid" width="100" height="100" value="/resource/img/logo1.png" />
             </h:link>
             <div class="navbar-nav ml-auto">
-                <h:link class="nav-item nav-link" target="_self" value="Home" outcome="/vendor/home?faces-redirect=true"/>
-                <h:link class="nav-item nav-link" target="_self" value="Profile" outcome="/vendor/profile?faces-redirect=true"/>
+                <h:link class="nav-item nav-link" target="_self" value="Home" outcome="/admin/home?faces-redirect=true"/>
+                <h:link class="nav-item nav-link" target="_self" value="New Order" outcome="/admin/new-order?faces-redirect=true"/>
+                <h:link class="nav-item nav-link" target="_self" value="Vendors" outcome="/admin/vendor?faces-redirect=true"/>
                 <h:form>
                     <h:commandLink class="nav-item nav-link" value="Logout" action="#{auth.logout}"/>
                 </h:form>
@@ -48,6 +49,32 @@
                     <h:column>
                         <f:facet name="header">Price</f:facet>
                             #{bidv.price}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Accepted</f:facet>
+                            #{bidv.status}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">User</f:facet>
+                            #{bidv.userId.username}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Company</f:facet>
+                            #{bidv.userId.profile.company.compName}
+                    </h:column>
+                    <h:column>
+                        <h:link value="Accept" outcome="#{bidService.acceptBid()}">
+                            <f:param  name="bidId" value="#{bidv.bidId}" />
+                            <f:param  name="orderId" value="#{bidService.orderId}" />
+                        </h:link>
+                    </h:column>
+                    <h:column>
+                        <h:form>
+                            <h:link value="Decline" outcome="#{bidService.declineBid()}">
+                                <f:param  name="bidId" value="#{bidv.bidId}" />
+                                <f:param  name="orderId" value="#{bidService.orderId}" />
+                            </h:link>
+                        </h:form>
                     </h:column>
                 </h:dataTable>
             </div> 

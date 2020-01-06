@@ -44,13 +44,24 @@ public class Bid implements Serializable {
     @Size(max = 30)
     @Column(name = "BID_DATE")
     private String bidDate;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "PRICE")
     private int price;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "STATUS")
+    private Boolean status;
+    
     @JoinColumn(name = "PO_NUMBER", referencedColumnName = "PO_NUMBER")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private PoOrder poNumber;
+    
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private User userId;
 
     public Bid() {
     }
@@ -119,6 +130,22 @@ public class Bid implements Serializable {
     @Override
     public String toString() {
         return "model.Bid[ bidId=" + bidId + " ]";
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
 }

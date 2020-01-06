@@ -35,6 +35,11 @@ public class BidDao {
         int result = query.executeUpdate();
         return result > 0;
     }
+    
+    public Bid findBidById(int id){
+        Bid bid = this.em.find(Bid.class, id);
+        return bid;
+    }
 
     public EntityManager getEm() {
         return em;

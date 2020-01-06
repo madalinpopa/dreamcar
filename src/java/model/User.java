@@ -6,6 +6,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -57,6 +59,9 @@ public class User implements Serializable {
     private String role;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.EAGER)
     private Profile profile;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.EAGER)
+    private List<Bid> bidList;
 
     public User() {
     }
@@ -135,5 +140,13 @@ public class User implements Serializable {
     public String toString() {
         return "model.User[ userId=" + userId + " ]";
     }
-    
+
+    public List<Bid> getBidList() {
+        return bidList;
+    }
+
+    public void setBidList(List<Bid> bidList) {
+        this.bidList = bidList;
+    }
+
 }
