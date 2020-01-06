@@ -60,7 +60,9 @@
                     </h:column>
                     <h:column>
                         <h:form>
-                            <h:commandLink value="New offer"/>
+                            <h:link value="New offer" outcome="/vendor/new-offer.xhtml?faces-redirect=true" >
+                                <f:param name="orderId" value="#{orderv.orderId}"/>
+                            </h:link>
                         </h:form>
                     </h:column>
                      <h:column>
