@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import model.Bid;
 import model.User;
 
 /**
@@ -61,6 +62,13 @@ public class UserDao {
         query.setParameter("role", role);
         List<User> vendors = query.getResultList();
         return vendors;
+    }
+    
+    public User getUserById(int id){
+        Query query = this.em.createNamedQuery("User.findByUserId");
+        query.setParameter("userId", id);
+        User user = (User) query.getSingleResult();
+        return user;
     }
 
     public EntityManager getEm() {

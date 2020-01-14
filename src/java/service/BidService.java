@@ -7,6 +7,7 @@ package service;
 
 import dao.BidDao;
 import dao.PoOrderDao;
+import dao.UserDao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import model.Bid;
 import model.PoOrder;
+import model.User;
 
 /**
  *
@@ -43,6 +45,10 @@ public class BidService {
     private PoOrder order;
     private List<Bid> bids;
     private List<Bid> userBids;
+    private User user;
+
+    @Inject
+    private UserDao userDao;
 
     @Inject
     private BidDao bidDao;
@@ -59,7 +65,8 @@ public class BidService {
     @PostConstruct
     public void init() {
         this.bid = new Bid();
-        this.userBids = auth.getUser().getBidList();
+        User dbUser = this.userDao.getUserById(this.auth.getUser().getUserId());
+        this.userBids = dbUser.getBidList();
     }
 
     public void addBid() {
