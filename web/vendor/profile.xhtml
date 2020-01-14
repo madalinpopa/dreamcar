@@ -79,6 +79,11 @@
                                         <f:facet name="header">Accepted</f:facet>
                                             #{bidv.status}
                                     </h:column>
+                                    <h:column>
+                                        <h:form>
+                                            <h:commandLink value="Delete" action="#{bidService.deleteBid(bidv.bidId)}"/>
+                                        </h:form>
+                                    </h:column>
                                 </h:dataTable>
                             </div>
                         </div>

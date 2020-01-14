@@ -182,6 +182,25 @@ public class BidService {
 
     }
 
+    public String deleteBid(int id) {
+
+        try {
+
+            this.utx.begin();
+            this.bidDao.deleteBid(id);
+            this.utx.commit();
+
+            User dbUser = this.userDao.getUserById(this.auth.getUser().getUserId());
+            this.userBids = dbUser.getBidList();
+            this.bidDao.getEm().getEntityManagerFactory().getCache().evictAll();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "/vendor/profile.xhtml?faces-redirect=true";
+    }
+
     public Bid getBid() {
         return bid;
     }
