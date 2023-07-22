@@ -3,7 +3,7 @@
 ## Dreamcar
 
 This is a school project, a web application made with Java Enterprise tehnologies.
-For this project have been used the following APIs:
+For this project I used the following APIs:
 
 1. JSF - Java Server Faces
 2. CDI - Java Enterprise Contexts and Dependency Injection
@@ -11,9 +11,9 @@ For this project have been used the following APIs:
 4. MYSQL - Database
 5. Glasfish 4.1.2 - Application Server
 
-## What application does?
+## About
 
-Dream Car is a company which produces auto components. This is an internal application which should be used by different vendors to bid for Dream Car placed orders. 
+Dream Car is a fictive company that produces auto components. This is an internal application which should be used by different vendors to bid for Dream Car placed orders. 
 
 Each vendor has an account and can see the orders placed by company. For one order, multiple vendors can bid. 
 
