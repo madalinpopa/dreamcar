@@ -1,21 +1,18 @@
 ![Welcom Page](https://i.imgur.com/LhS4nJt.png)
 
-## Dreamcar
+## About
+
+Dream Car is a fictive company that produces auto components. This is an internal application which should be used by different vendors to bid for Dream Car placed orders. 
+
+Each vendor has an account and can see the orders placed by company. For one order, multiple vendors can bid. 
 
 This is a school project, a web application made with Java Enterprise tehnologies.
-For this project I used the following APIs:
 
 1. JSF - Java Server Faces
 2. CDI - Java Enterprise Contexts and Dependency Injection
 3. JPA - Java Persistence API
 4. MYSQL - Database
 5. Glasfish 4.1.2 - Application Server
-
-## About
-
-Dream Car is a fictive company that produces auto components. This is an internal application which should be used by different vendors to bid for Dream Car placed orders. 
-
-Each vendor has an account and can see the orders placed by company. For one order, multiple vendors can bid. 
 
 ## Screenshots
 
